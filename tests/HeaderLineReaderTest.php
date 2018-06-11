@@ -8,6 +8,21 @@ use PHPUnit\Framework\TestCase;
 
 class HeaderLineReaderTest extends TestCase
 {
+
+    /**
+     * @testWith ["DEFINITION", "Some description",  "DEFINITION  Some description"]
+     *           ["ACCESSION", "1.2.3",  "ACCESSION   1.2.3"]
+     *           ["AUTHORS", "Edwin Rodriguez",  "  AUTHORS   Edwin Rodriguez"]
+     * @param null|string $expectedField
+     * @param string $expectedContent
+     * @param string $line
+     */
+    public function testLineRead(?string $expectedField, string $expectedContent, string $line) {
+        $header = new HeaderLineReader($line);
+        $this->assertEquals($expectedField, $header->getField());
+        $this->assertEquals($expectedContent, $header->getContent());
+    }
+
     /**
      * @testWith [true, "FEATURE    "]
      *           [true, "  FEATURE        "]

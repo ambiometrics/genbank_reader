@@ -66,6 +66,11 @@ class HeaderLineReader
         return $this->field == self::TERMINATION_FIELD;
     }
 
+    /**
+     * @param string $line
+     * @return null|string
+     * @throws exception\InvalidHeaderFieldException
+     */
     private function readField(string $line) : ?string {
         $field = trim(substr($line, 0, 12));
 
