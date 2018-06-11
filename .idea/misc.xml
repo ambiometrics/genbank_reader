@@ -9,8 +9,19 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="-1759419408">
+      <usages-collector id="statistics.php.composer.actions">
+        <counts>
+          <entry key="init_from_ProjectViewPopup" value="1" />
+          <entry key="updateAll_from_ProjectViewPopup" value="3" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
+  </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/tests/HeaderReaderTest.php" />
   </component>
 </project>

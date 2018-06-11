@@ -1,6 +1,6 @@
 <?php
 
-namespace edwrodrig\cnv_reader;
+namespace edwrodrig\genbank;
 use IteratorAggregate;
 
 /**
@@ -31,7 +31,7 @@ use IteratorAggregate;
  * @see http://www.odb.ntu.edu.tw/Thermosalinograph/instrument/SBEDataProcessing.pdf
  * @package edwrodrig\cnv_reader
  */
-class CnvReader implements IteratorAggregate
+class GenbankReader implements IteratorAggregate
 {
 
     /**
@@ -78,7 +78,7 @@ class CnvReader implements IteratorAggregate
      * Convert a raw line in a array of columns.
      *
      * You can get the column metadata with {@see HeaderParser::getMetricByColummn()}
-     * @see CnvReader::getHeaders() to get the header class
+     * @see GenbankReader::getHeaders() to get the header class
      * @param string $line
      * @return array
      */

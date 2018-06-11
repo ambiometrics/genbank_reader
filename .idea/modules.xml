@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/cnv_parser.iml" filepath="$PROJECT_DIR$/.idea/cnv_parser.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/genbank.iml" filepath="$PROJECT_DIR$/.idea/genbank.iml" />
     </modules>
   </component>
 </project>
