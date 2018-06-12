@@ -24,10 +24,10 @@ class HeaderLineReaderTest extends TestCase
     }
 
     /**
-     * @testWith [true, "FEATURE    "]
-     *           [true, "  FEATURE        "]
+     * @testWith [true, "FEATURES    "]
+     *           [true, "  FEATURES        "]
      *           [false, "DEFINITION    "]
-     *           [false, "                        FEATURE    "]
+     *           [false, "                        FEATURES    "]
      * @param bool $expected
      * @param string $line
      * @throws \edwrodrig\genbank\exception\InvalidHeaderLineFormatException
@@ -49,6 +49,18 @@ class HeaderLineReaderTest extends TestCase
     public function testIsContinuation(bool $expected, string $line) {
         $header = new HeaderLineReader($line);
         $this->assertEquals($expected, $header->isContinuation());
+    }
+
+    /**
+     * @testWith [true, " DEFINITION               hola"]
+     *           [true, "  DEFINITION           hola"]
+     *           [false, "DEFINITION               hola"]
+     * @param bool $expected
+     * @param string $line
+     */
+    public function testIsNested(bool $expected, string $line) {
+        $header = new HeaderLineReader($line);
+        $this->assertEquals($expected, $header->isNested());
     }
 
 }

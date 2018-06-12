@@ -18,24 +18,7 @@
             QString line = stream.readLine();
             ++linecount;
             if( state == HEADER ) {
-                first = line.mid ( 0 , 12 ).trimmed() ;
-                if ( first == "LOCUS " ) tag = "LOCUS" ;
-                else if ( first == "DEFINITION" ) tag = "DEFINITION" ;
-                else if ( first == "ACCESSION" ) tag = "ACCESSION" ;
-                else if ( first == "VERSION" ) tag = "VERSION" ;
-                else if ( first == "ORGANISM" ) tag = "ORGANISM" ;
-                else if ( first == "FEATURES" ) {
-                    state = FEATURES ;
-                    continue ;
-                }
-                else if ( first != "" ) tag = "" ;
 
-                if ( tag != "" ) {
-                    if ( data.contains ( tag ) ) {
-                        data[tag] += ( QString (" ") + line.mid ( 12 ).trimmed() ) ;
-                    } else data[tag] = line.mid ( 12 ).trimmed() ;
-                    if ( tag == "ORGANISM" ) tag = "LINEAGE" ;
-                }
             } else if ( state == FEATURES ) {
 
                 //qWarning() << "Estado: FEATURES";

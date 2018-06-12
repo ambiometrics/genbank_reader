@@ -22,6 +22,11 @@ class HeaderLineReader
      */
     private $content;
 
+    /**
+     * @var bool
+     */
+    private $nested = false;
+
     const VALID_FIELDS = [
         'LOCUS',
         'DEFINITION',
@@ -37,7 +42,7 @@ class HeaderLineReader
         'PUBMED'
     ];
 
-    const TERMINATION_FIELD = 'FEATURE';
+    const TERMINATION_FIELD = 'FEATURES';
 
     public function __construct(string $line) {
         $this->field = $this->readField($line);
@@ -66,6 +71,10 @@ class HeaderLineReader
         return $this->field == self::TERMINATION_FIELD;
     }
 
+    public function isNested() : bool {
+        return $this->nested;
+    }
+
     /**
      * @param string $line
      * @return null|string
@@ -76,6 +85,10 @@ class HeaderLineReader
 
         if ( empty($field) )
             return null;
+
+        if ( empty(trim($line[0])) ) {
+            $this->nested = true;
+        }
 
         if ( in_array($field, self::VALID_FIELDS) ) {
             return $field;

@@ -29,10 +29,24 @@ class HeaderReader
     private $locus = null;
 
     /**
+     * @var null|string
+     */
+    private $version = null;
+
+    /**
+     * @var null|string
+     */
+    private $organism = null;
+
+    /**
+     * @var Reference[]
+     */
+    private $references = [];
+
+    /**
      * HeaderParser constructor.
      * @param $stream
      * @throws exception\InvalidStreamException
-     * @throws exception\InvalidHeaderLineFormatException
      */
     public function __construct($stream) {
         if ( !is_resource($stream) ) {
@@ -50,10 +64,30 @@ class HeaderReader
         return $this->locus;
     }
 
-    public function parse() {
+    public function getVersion() : ?string {
+        return $this->version;
+    }
 
+    public function getOrganism() : ?string {
+        return $this->organism;
+    }
+
+    /**
+     * @return Reference[]
+     */
+    public function getReferences() : array {
+        return $this->references;
+    }
+
+    public function parse() {
         $field = null;
         $content = null;
+
+        /**
+         * @var $reference Reference
+         */
+        $reference = null;
+
         while ( $line = fgets($this->stream) ) {
             $line_reader = new HeaderLineReader($line);
             if ($line_reader->isContinuation()) {
@@ -67,36 +101,36 @@ class HeaderReader
                     $this->definition = trim($content);
                 } else if ($field == 'LOCUS') {
                     $this->locus = trim($content);
+                } else if ($field == 'VERSION' ) {
+                    $this->version = trim($content);
+                } else if ( $field == 'ORGANISM') {
+                    $this->organism = trim($content);
+                } else if ( $field == 'REFERENCE' ) {
+                    if ( !is_null($reference))
+                        $this->references[] = $reference;
+                    $reference = new Reference();
+                    $reference->setReference(trim($content));
+                } else if ( $field == 'AUTHORS') {
+                    $reference->setAuthors(trim($content));
+                } else if ( $field == 'TITLE' ) {
+                    $reference->setTitle(trim($content));
+                } else if ( $field == 'JOURNAL' ) {
+                    $reference->setJournal(trim($content));
+                } else if ( $field == 'PUBMED') {
+                    $reference->setPubmed(trim($content));
                 }
-
 
                 if ($line_reader->isEnd()) {
                     break;
                 } else {
                     $field = $line_reader->getField();
                     $content = $line_reader->getContent();
+
                 }
             }
         }
 
-
-        first = line.mid ( 0 , 12 ).trimmed() ;
-        if ( first == "LOCUS " ) tag = "LOCUS" ;
-        else if ( first == "DEFINITION" ) tag = "DEFINITION" ;
-        else if ( first == "ACCESSION" ) tag = "ACCESSION" ;
-        else if ( first == "VERSION" ) tag = "VERSION" ;
-        else if ( first == "ORGANISM" ) tag = "ORGANISM" ;
-        else if ( first == "FEATURES" ) {
-            state = FEATURES ;
-            continue ;
-        }
-        else if ( first != "" ) tag = "" ;
-
-        if ( tag != "" ) {
-            if ( data.contains ( tag ) ) {
-                data[tag] += ( QString (" ") + line.mid ( 12 ).trimmed() ) ;
-            } else data[tag] = line.mid ( 12 ).trimmed() ;
-            if ( tag == "ORGANISM" ) tag = "LINEAGE" ;
-        }
+        if ( !is_null($reference))
+            $this->references[] = $reference;
     }
 }

@@ -28,7 +28,7 @@ use IteratorAggregate;
  * point number for each value). The last column is a flag field used to mark
  * scans as bad in Loop Edit
  *
- * @see http://www.odb.ntu.edu.tw/Thermosalinograph/instrument/SBEDataProcessing.pdf
+ * @see https://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html
  * @package edwrodrig\cnv_reader
  */
 class GenbankReader implements IteratorAggregate
