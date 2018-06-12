@@ -4,13 +4,13 @@ declare(strict_types=1);
  * Created by PhpStorm.
  * User: edwin
  * Date: 12-06-18
- * Time: 11:27
+ * Time: 15:45
  */
 
 namespace edwrodrig\genbank;
 
 
-class Reference
+class HeaderReferenceReader
 {
     /**
      * @var null|string
@@ -36,6 +36,43 @@ class Reference
      * @var null|string
      */
     private $title;
+
+    public function __construct($stream) {
+        if ( !is_resource($stream) ) {
+            throw new exception\InvalidStreamException;
+        }
+        $this->stream = $stream;
+        $this->parse();
+    }
+
+    /**
+     * @throws exception\InvalidHeaderFieldException
+     * @throws exception\InvalidStreamException
+     */
+    private function parse() {
+        $reader = new HeaderFieldReader($this->stream);
+        $this->reference = $reader->getContent();
+
+
+        while ( $field = HeaderFieldReader::getNextField($this->stream) ) {
+
+
+            if ($field == 'AUTHORS') {
+                $reader = new HeaderFieldReader($this->stream);
+                $this->authors = $reader->getContent();
+            } else if ($field == 'TITLE') {
+                $reader = new HeaderFieldReader($this->stream);
+                $this->title = $reader->getContent();
+            } else if ( $field == 'JOURNAL' ) {
+                $reader = new HeaderFieldReader($this->stream);
+                $this->journal = $reader->getContent();
+            } else if ( $field == 'PUBMED' ) {
+                $reader = new HeaderFieldReader($this->stream);
+                $this->pubmed = $reader->getContent();
+            } else
+                break;
+        }
+    }
 
     /**
      * Get reference information
@@ -113,35 +150,5 @@ class Reference
      */
     public function getPubmed() : ?string {
         return $this->pubmed;
-    }
-
-    /**
-     * Get the reference information
-     *
-     * @see Reference::getReference()
-     * @param string $content
-     */
-    public function setReference(string $content) {
-        $this->reference = $content;
-    }
-
-    public function setAuthors(string $authors)
-    {
-        $this->authors= $authors;
-    }
-
-    public function setTitle(string $title)
-    {
-        $this->title = $title;
-    }
-
-    public function setJournal(string $journal)
-    {
-        $this->journal = $journal;
-    }
-
-    public function setPubmed(string $pubmed)
-    {
-        $this->pubmed = $pubmed;
     }
 }

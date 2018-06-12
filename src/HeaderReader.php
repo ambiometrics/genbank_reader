@@ -73,64 +73,38 @@ class HeaderReader
     }
 
     /**
-     * @return Reference[]
+     * @return HeaderReferenceReader[]
      */
     public function getReferences() : array {
         return $this->references;
     }
 
-    public function parse() {
-        $field = null;
-        $content = null;
+    /**
+     * @throws exception\InvalidHeaderFieldException
+     * @throws exception\InvalidStreamException
+     */
+    private function parse() {
 
-        /**
-         * @var $reference Reference
-         */
-        $reference = null;
+        while ( $field = HeaderFieldReader::getNextField($this->stream) ) {
 
-        while ( $line = fgets($this->stream) ) {
-            $line_reader = new HeaderLineReader($line);
-            if ($line_reader->isContinuation()) {
-                $content .= $line_reader->getContent();
+            if ( $field == 'FEATURES')
+                break;
 
-            } else {
-
-                if ( is_null($field) ) {
-
-                } else if ($field == 'DEFINITION') {
-                    $this->definition = trim($content);
+            if ( $field == 'REFERENCE')
+                $this->references[] = new HeaderReferenceReader($this->stream);
+            else {
+                $reader = new HeaderFieldReader($this->stream);
+                if ( $field == 'DEFINITION')  {
+                    $this->definition = $reader->getContent();
                 } else if ($field == 'LOCUS') {
-                    $this->locus = trim($content);
+                    $this->locus = $reader->getContent();
                 } else if ($field == 'VERSION' ) {
-                    $this->version = trim($content);
+                    $this->version = $reader->getContent();
                 } else if ( $field == 'ORGANISM') {
-                    $this->organism = trim($content);
-                } else if ( $field == 'REFERENCE' ) {
-                    if ( !is_null($reference))
-                        $this->references[] = $reference;
-                    $reference = new Reference();
-                    $reference->setReference(trim($content));
-                } else if ( $field == 'AUTHORS') {
-                    $reference->setAuthors(trim($content));
-                } else if ( $field == 'TITLE' ) {
-                    $reference->setTitle(trim($content));
-                } else if ( $field == 'JOURNAL' ) {
-                    $reference->setJournal(trim($content));
-                } else if ( $field == 'PUBMED') {
-                    $reference->setPubmed(trim($content));
-                }
-
-                if ($line_reader->isEnd()) {
-                    break;
-                } else {
-                    $field = $line_reader->getField();
-                    $content = $line_reader->getContent();
-
+                    $this->organism = $reader->getContent();
                 }
             }
         }
 
-        if ( !is_null($reference))
-            $this->references[] = $reference;
     }
 }

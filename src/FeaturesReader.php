@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace edwrodrig\genbank;
 
 
-class FeatureReader
+class FeaturesReader
 {
     /**
      * @var resource
@@ -31,7 +31,41 @@ class FeatureReader
         $this->parse();
     }
 
-    public function parse() {
+    /**
+     * @throws exception\InvalidHeaderFieldException
+     * @throws exception\InvalidStreamException
+     */
+    private function parse() {
+
+        while ( $field = HeaderFieldReader::getNextField($this->stream) ) {
+
+            if ( $field == 'ORIGIN')
+                break;
+
+
+            if ( $field == 'FEATURES')
+                $this->references[] = new HeaderReferenceReader($this->stream);
+            else if ( $field == 'source' ) {
+            } else if ( $field == 'CDS' ) {
+            } else if ( $field == 'tRNA' ) {
+            } else if ( $field == 'rRNA' ) {
+            } else if ( $field == 'mRNA' ) {
+            }
+
+                $reader = new HeaderFieldReader($this->stream);
+                if ( $field == 'DEFINITION')  {
+                    $this->definition = $reader->getContent();
+                } else if ($field == 'LOCUS') {
+                    $this->locus = $reader->getContent();
+                } else if ($field == 'VERSION' ) {
+                    $this->version = $reader->getContent();
+                } else if ( $field == 'ORGANISM') {
+                    $this->organism = $reader->getContent();
+                }
+            }
+        }
+
+    }
 
         //qWarning() << "Estado: FEATURES";
 /*
@@ -90,35 +124,7 @@ class FeatureReader
                 }
                     }
             rangeStr = featureStr = "" ;
-        } if ( first == "source" ) {
-            type = "source" ;
-            featureStr = "" ;
-            rangeStr = line.mid ( 21 ).trimmed() ;
-            continue ;
-        } else if( first == "CDS" ) {
-            type = "cds" ;
-            featureStr = "" ;
-            rangeStr = line.mid ( 21 ).trimmed () ;
-            continue ;
-        } else if( first == "tRNA" ) {
-            type = "trna" ;
-            featureStr = "" ;
-            rangeStr = line.mid ( 21 ).trimmed () ;
-            continue ;
-        } else if( first == "rRNA" ) {
-            type = "rrna" ;
-            featureStr = "" ;
-            rangeStr = line.mid ( 21 ).trimmed () ;
-            continue ;
-        } else if( first == "mRNA" ) {
-            type = "mRNA";
-            featureStr = "";
-            rangeStr = line.mid ( 21 ).trimmed();
-            continue;
-        } else if( first == "ORIGIN" ) {
-            state = ORIGIN;
-            continue;
-        }
+
 
         if( first.length() == 0 ) {
             QString str = line.mid( 21 ).trimmed();
