@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace test\edwrodrig\genbank;
+namespace test\edwrodrig\genbank_reader;
 
-use edwrodrig\genbank\HeaderReader;
+use edwrodrig\genbank_reader\HeaderReader;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +20,7 @@ class HeaderReaderTest extends TestCase
     }
 
     /**
-     * @throws \edwrodrig\genbank\exception\InvalidStreamException
+     * @throws \edwrodrig\genbank_reader\exception\InvalidStreamException
      */
     public function testHappyCase() {
         $filename =  $this->root->url() . '/test';
@@ -41,7 +41,7 @@ EOF
     }
 
     /**
-     * @throws \edwrodrig\genbank\exception\InvalidStreamException
+     * @throws \edwrodrig\genbank_reader\exception\InvalidStreamException
      */
     public function testReference() {
         $filename =  $this->root->url() . '/test';

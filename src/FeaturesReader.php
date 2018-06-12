@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Time: 10:53
  */
 
-namespace edwrodrig\genbank;
+namespace edwrodrig\genbank_reader;
 
 
 class FeaturesReader
@@ -20,8 +20,8 @@ class FeaturesReader
     /**
      * FeatureReader constructor.
      * @param $stream
+     * @throws exception\InvalidHeaderFieldException
      * @throws exception\InvalidStreamException
-     * @throws exception\InvalidHeaderLineFormatException
      */
     public function __construct($stream) {
         if ( !is_resource($stream) ) {
@@ -52,16 +52,15 @@ class FeaturesReader
             } else if ( $field == 'mRNA' ) {
             }
 
-                $reader = new HeaderFieldReader($this->stream);
-                if ( $field == 'DEFINITION')  {
-                    $this->definition = $reader->getContent();
-                } else if ($field == 'LOCUS') {
-                    $this->locus = $reader->getContent();
-                } else if ($field == 'VERSION' ) {
-                    $this->version = $reader->getContent();
-                } else if ( $field == 'ORGANISM') {
-                    $this->organism = $reader->getContent();
-                }
+            $reader = new HeaderFieldReader($this->stream);
+            if ( $field == 'DEFINITION')  {
+                $this->definition = $reader->getContent();
+            } else if ($field == 'LOCUS') {
+                $this->locus = $reader->getContent();
+            } else if ($field == 'VERSION' ) {
+                $this->version = $reader->getContent();
+            } else if ( $field == 'ORGANISM') {
+                $this->organism = $reader->getContent();
             }
         }
 

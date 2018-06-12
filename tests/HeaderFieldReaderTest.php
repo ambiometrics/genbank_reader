@@ -7,9 +7,9 @@ declare(strict_types=1);
  * Time: 14:50
  */
 
-namespace test\edwrodrig\genbank;
+namespace test\edwrodrig\genbank_reader;
 
-use edwrodrig\genbank\HeaderFieldReader;
+use edwrodrig\genbank_reader\HeaderFieldReader;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
@@ -71,8 +71,8 @@ EOF
      * @param null|string $expectedField
      * @param string $expectedContent
      * @param string $line
-     * @throws \edwrodrig\genbank\exception\InvalidHeaderFieldException
-     * @throws \edwrodrig\genbank\exception\InvalidStreamException
+     * @throws \edwrodrig\genbank_reader\exception\InvalidHeaderFieldException
+     * @throws \edwrodrig\genbank_reader\exception\InvalidStreamException
      */
     public function testLineRead(?string $expectedField, string $expectedContent, string $line) {
         $filename =  $this->root->url() . '/test';

@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Time: 15:45
  */
 
-namespace edwrodrig\genbank;
+namespace edwrodrig\genbank_reader;
 
 
 class HeaderReferenceReader

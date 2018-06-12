@@ -1,5 +1,5 @@
 {
-    "name": "edwrodrig/genbank",
+    "name": "edwrodrig/genbank_reader",
     "description": "Library to work with GenBank files",
     "authors": [
         {
@@ -25,12 +25,12 @@
     },
     "autoload" : {
         "psr-4" : {
-            "edwrodrig\\genbank\\" : "src/"
+            "edwrodrig\\genbank_reader\\" : "src/"
         }
     },
     "autoload-dev" : {
         "psr-4" : {
-            "test\\edwrodrig\\genbank\\" : "tests/"
+            "test\\edwrodrig\\genbank_reader\\" : "tests/"
         }
     },
     "archive": {

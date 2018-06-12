@@ -1,35 +1,11 @@
 <?php
 
-namespace edwrodrig\genbank;
+namespace edwrodrig\genbank_reader;
 use IteratorAggregate;
 
 /**
- * Class FileParser
- * 
- * This class parse a converted data file format from some STD devices.
- * CNV stand for converted
- * The format may vary between vendors.
- * 
- * Converted Data File (.cnv) Format
- * 
- * Converted files consist of a descriptive header followed by converted data in
- * engineering units. The header contains:
- * 1. Header information from the raw input data file (these lines begin with *).
- * 2. Header information describing the converted data file (these lines begin with #)
- *    The descriptions include:
- *     * number of rows and columns of data
- *     * variable for each column (for example, pressure, temperature, etc.)
- *     * interval between each row (scan rate or bin size)
- *     * historical record of processing steps used to create or modify file
- * 3. ASCII string *END* to flag the end of the header information.
- *
- * Converted data is stored in rows and columns of ASCII numbers
- * (11 characters per value) or as a binary data stream (4 byte binary floating
- * point number for each value). The last column is a flag field used to mark
- * scans as bad in Loop Edit
- *
  * @see https://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html
- * @package edwrodrig\cnv_reader
+ * @package edwrodrig\genbank_reader
  */
 class GenbankReader implements IteratorAggregate
 {

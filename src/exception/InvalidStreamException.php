@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Time: 15:53
  */
 
-namespace edwrodrig\genbank\exception;
+namespace edwrodrig\genbank_reader\exception;
 
 
 use Exception;

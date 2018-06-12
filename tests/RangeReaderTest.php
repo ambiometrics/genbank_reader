@@ -1,15 +1,9 @@
 <?php
 declare(strict_types=1);
-/**
- * Created by PhpStorm.
- * User: edwin
- * Date: 12-06-18
- * Time: 17:00
- */
 
-namespace test\edwrodrig\genbank;
+namespace test\edwrodrig\genbank_reader;
 
-use edwrodrig\genbank\RangeReader;
+use edwrodrig\genbank_reader\RangeReader;
 use PHPUnit\Framework\TestCase;
 
 class RangeReaderTest extends TestCase
