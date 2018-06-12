@@ -1,6 +1,7 @@
-edwrodrig\genbank
+edwrodrig\genbank_reader
 ========
-A php library to work with genbank files.
+A php library to read with genbank files.
+This is under construction
 
 [![Latest Stable Version](https://poser.pugx.org/edwrodrig/genbank/v/stable)](https://packagist.org/packages/edwrodrig/genbank)
 [![Total Downloads](https://poser.pugx.org/edwrodrig/genbank/downloads)](https://packagist.org/packages/edwrodrig/genbank)
@@ -22,7 +23,7 @@ so it should pop up nicely if you're using IDEs like [PhpStorm](https://www.jetb
 
 ## Composer
 ```
-composer require edwrodrig/genbank
+composer require edwrodrig/genbank_reader
 ```
 
 ## Testing
