@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace test\edwrodrig\genbank_reader;
 
 use edwrodrig\genbank_reader\HeaderReader;
+use edwrodrig\genbank_reader\StreamReader;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
@@ -35,7 +36,7 @@ EOF
         $f = fopen($filename, 'r');
 
 
-        $header = new HeaderReader($f);
+        $header = new HeaderReader(new StreamReader($f));
         $this->assertEquals("hola como te va\nmuy bien saludos", $header->getDefinition());
         $this->assertEquals('some locus', $header->getLocus());
     }
@@ -80,7 +81,7 @@ EOF
         $f = fopen($filename, 'r');
 
 
-        $header = new HeaderReader($f);
+        $header = new HeaderReader(new StreamReader($f));
         $this->assertEquals("Saccharomyces cerevisiae TCP1-beta gene, partial cds, and Axl2p\n(AXL2) and Rev7p (REV7) genes, complete cds.", $header->getDefinition());
         $this->assertEquals('SCU49845     5028 bp    DNA             PLN       21-JUN-1999', $header->getLocus());
 

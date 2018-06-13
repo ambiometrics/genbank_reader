@@ -14,7 +14,7 @@ class HeaderReader
 {
 
     /**
-     * @var resource
+     * @var StreamReader
      */
     private $stream;
 
@@ -45,13 +45,11 @@ class HeaderReader
 
     /**
      * HeaderParser constructor.
-     * @param $stream
+     * @param StreamReader $stream
+     * @throws exception\InvalidHeaderFieldException
      * @throws exception\InvalidStreamException
      */
-    public function __construct($stream) {
-        if ( !is_resource($stream) ) {
-            throw new exception\InvalidStreamException;
-        }
+    public function __construct(StreamReader $stream) {
         $this->stream = $stream;
         $this->parse();
     }
@@ -81,7 +79,6 @@ class HeaderReader
 
     /**
      * @throws exception\InvalidHeaderFieldException
-     * @throws exception\InvalidStreamException
      */
     private function parse() {
 

@@ -9,6 +9,7 @@
 namespace test\edwrodrig\genbank_reader;
 
 use edwrodrig\genbank_reader\FeatureFieldReader;
+use edwrodrig\genbank_reader\StreamReader;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
@@ -28,6 +29,7 @@ class FeatureFieldReaderTest extends TestCase
     /**
      * @throws \edwrodrig\genbank_reader\exception\InvalidFeatureFieldException
      * @throws \edwrodrig\genbank_reader\exception\InvalidStreamException
+     * @throws \edwrodrig\genbank_reader\exception\InvalidHeaderFieldException
      */
     public function testReadSingle() {
         $filename =  $this->root->url() . '/test';
@@ -43,7 +45,7 @@ EOF
         $f = fopen($filename, 'r');
 
 
-        $header = new FeatureFieldReader($f);
+        $header = new FeatureFieldReader(new StreamReader($f));
         $this->assertEquals("source", $header->getField());
         $this->assertEquals(1, $header->getLocation()->getStart());
         $this->assertEquals(5028, $header->getLocation()->getEnd());

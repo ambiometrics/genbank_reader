@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace test\edwrodrig\genbank_reader;
 
 use edwrodrig\genbank_reader\HeaderFieldReader;
+use edwrodrig\genbank_reader\StreamReader;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
@@ -26,6 +27,10 @@ class HeaderFieldReaderTest extends TestCase
         $this->root = vfsStream::setup();
     }
 
+    /**
+     * @throws \edwrodrig\genbank_reader\exception\InvalidHeaderFieldException
+     * @throws \edwrodrig\genbank_reader\exception\InvalidStreamException
+     */
     public function testReadSingle() {
         $filename =  $this->root->url() . '/test';
 
@@ -38,12 +43,16 @@ EOF
         $f = fopen($filename, 'r');
 
 
-        $header = new HeaderFieldReader($f);
+        $header = new HeaderFieldReader(new StreamReader($f));
         $this->assertEquals("ORGANISM", $header->getField());
         $this->assertEquals("Saccharomyces cerevisiae\nEukaryota; Fungi; Ascomycota; Saccharomycotina; Saccharomycetes;\nSaccharomycetales; Saccharomycetaceae; Saccharomyces.", $header->getContent());
 
     }
 
+    /**
+     * @throws \edwrodrig\genbank_reader\exception\InvalidHeaderFieldException
+     * @throws \edwrodrig\genbank_reader\exception\InvalidStreamException
+     */
     public function testReadDouble() {
         $filename =  $this->root->url() . '/test';
 
@@ -57,7 +66,7 @@ EOF
         $f = fopen($filename, 'r');
 
 
-        $header = new HeaderFieldReader($f);
+        $header = new HeaderFieldReader(new StreamReader($f));
         $this->assertEquals("ORGANISM", $header->getField());
         $this->assertEquals("Saccharomyces cerevisiae\nEukaryota; Fungi; Ascomycota; Saccharomycotina; Saccharomycetes;\nSaccharomycetales; Saccharomycetaceae; Saccharomyces.", $header->getContent());
 
@@ -81,18 +90,21 @@ EOF
         $f = fopen($filename, 'r');
 
 
-        $header = new HeaderFieldReader($f);
+        $header = new HeaderFieldReader(new StreamReader($f));
         $this->assertEquals($expectedField, $header->getField());
         $this->assertEquals($expectedContent, $header->getContent());
 
     }
 
+    /**
+     * @throws \edwrodrig\genbank_reader\exception\InvalidStreamException
+     */
     public function testGetNextField() {
         $filename =  $this->root->url() . '/test';
 
         file_put_contents($filename, 'DEFINITION');
         $f = fopen($filename, 'r');
 
-        $this->assertEquals('DEFINITION', HeaderFieldReader::getNextField($f));
+        $this->assertEquals('DEFINITION', HeaderFieldReader::getNextField(new StreamReader($f)));
     }
 }

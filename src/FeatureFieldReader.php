@@ -8,7 +8,7 @@ class FeatureFieldReader
 {
 
     /**
-     * @var resource
+     * @var StreamReader
      */
     private $stream;
 
@@ -31,12 +31,8 @@ class FeatureFieldReader
      * HeaderFieldReader constructor.
      * @param $stream
      * @throws exception\InvalidFeatureFieldException
-     * @throws exception\InvalidStreamException
      */
-    public function __construct($stream) {
-        if ( !is_resource($stream) ) {
-            throw new exception\InvalidStreamException;
-        }
+    public function __construct(StreamReader $stream) {
         $this->stream = $stream;
         $this->parse();
     }
@@ -53,17 +49,11 @@ class FeatureFieldReader
         return $this->content;
     }
 
-    static public function getNextField($stream) : ?string {
-        if ( !is_resource($stream) ) {
-            throw new exception\InvalidStreamException;
-        }
-
-        $position = ftell($stream);
-        $line = fgets($stream);
-        fseek($stream, $position);
+    static public function getNextField(StreamReader $stream) : ?string {
+        $line = $stream->readLine();
+        $stream->rollBack();
 
         return self::readField($line);
-
     }
 
 
@@ -88,7 +78,7 @@ class FeatureFieldReader
      * @throws exception\InvalidFeatureFieldException
      */
     private function parse() {
-        $line = fgets($this->stream);
+        $line = $this->stream->readLine();
 
         $this->field = self::readField($line);
         $this->location = new RangeReader(trim(self::readContent($line)));
@@ -98,8 +88,8 @@ class FeatureFieldReader
         }
 
 
-        $position = ftell($this->stream);
-        while ( $line = fgets($this->stream) ) {
+        while ( !$this->stream->atEnd() ) {
+            $line = $this->stream->readLine();
 
             $field = $this->readField($line);
             $content = $this->readContent($line);
@@ -108,10 +98,9 @@ class FeatureFieldReader
                 $this->content .= $content;
 
             } else {
-                fseek($this->stream, $position);
+                $this->stream->rollBack();
                 break;
             }
-            $position = ftell($this->stream);
         }
         $this->content = trim($this->content);
     }

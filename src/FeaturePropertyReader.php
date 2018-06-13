@@ -1,12 +1,17 @@
 <?php
 declare(strict_types=1);
+/**
+ * Created by PhpStorm.
+ * User: edwin
+ * Date: 13-06-18
+ * Time: 15:39
+ */
 
 namespace edwrodrig\genbank_reader;
 
 
-class HeaderFieldReader
+class FeaturePropertyReader
 {
-
     /**
      * @var StreamReader
      */
@@ -18,14 +23,14 @@ class HeaderFieldReader
     private $field = null;
 
     /**
-     * @var null|string
+     * @var string
      */
     private $content = '';
 
     /**
      * HeaderFieldReader constructor.
-     * @param StreamReader $stream
-     * @throws exception\InvalidHeaderFieldException
+     * @param $stream
+     * @throws exception\InvalidFeatureFieldException
      */
     public function __construct(StreamReader $stream) {
         $this->stream = $stream;
@@ -41,43 +46,52 @@ class HeaderFieldReader
     }
 
     static public function getNextField(StreamReader $stream) : ?string {
-
         $line = $stream->readLine();
         $stream->rollBack();
 
         return self::readField($line);
-
     }
 
-
     static private function readField(string $line) : ?string {
-        $field = trim(substr($line, 0, 12));
-
-        if ( empty($field) )
+        if ( $field = preg_match('/\/([^=]*)=(.*)/', $line, $matches) ) {
+            return trim($matches[1]);
+        } else {
             return null;
+        }
 
-        return $field;
     }
 
     static private function readContent(string $line) : string {
-        if ( $part = substr($line, 12) ) {
-            return $part;
+        if ( $field = preg_match('/\/([^=]*)=(.*)/', $line, $matches) ) {
+            return $matches[2];
         } else {
-            return '';
+            return $line;
         }
     }
 
+    private function normalizeContent() {
+        $this->content = trim($this->content);
+
+        if ( strlen($this->content) < 2 ) return;
+
+        $last_char = $this->content[strlen($this->content) - 1];
+        if ( $this->content[0] == '"' && $last_char == '"' )
+            $this->content = substr($this->content, 1, strlen($this->content) - 2);
+    }
+
     /**
-     * @throws exception\InvalidHeaderFieldException
+     * @throws exception\InvalidFeatureFieldException
      */
     private function parse() {
         $line = $this->stream->readLine();
+
         $this->field = self::readField($line);
-        $this->content = self::readContent($line);
+        $this->content = trim(self::readContent($line));
 
         if ( is_null($this->field) ) {
-            throw new exception\InvalidHeaderFieldException($line);
+            throw new exception\InvalidFeatureFieldException($line);
         }
+
 
         while ( !$this->stream->atEnd() ) {
             $line = $this->stream->readLine();
@@ -93,6 +107,7 @@ class HeaderFieldReader
                 break;
             }
         }
-        $this->content = trim($this->content);
+
+        $this->normalizeContent();
     }
 }

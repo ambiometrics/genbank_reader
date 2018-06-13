@@ -13,6 +13,11 @@ namespace edwrodrig\genbank_reader;
 class HeaderReferenceReader
 {
     /**
+     * @var StreamReader
+     */
+    private $stream;
+
+    /**
      * @var null|string
      */
     private $reference;
@@ -37,17 +42,18 @@ class HeaderReferenceReader
      */
     private $title;
 
-    public function __construct($stream) {
-        if ( !is_resource($stream) ) {
-            throw new exception\InvalidStreamException;
-        }
+    /**
+     * HeaderReferenceReader constructor.
+     * @param StreamReader $stream
+     * @throws exception\InvalidHeaderFieldException
+     */
+    public function __construct(StreamReader $stream) {
         $this->stream = $stream;
         $this->parse();
     }
 
     /**
      * @throws exception\InvalidHeaderFieldException
-     * @throws exception\InvalidStreamException
      */
     private function parse() {
         $reader = new HeaderFieldReader($this->stream);

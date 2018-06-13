@@ -24,9 +24,8 @@ class GenbankReader implements IteratorAggregate
     /**
      * FileParser constructor.
      * @param string $filename
-     * @throws exception\InvalidHeaderLineFormatException
+     * @throws exception\InvalidHeaderFieldException
      * @throws exception\InvalidStreamException
-     * @throws exception\OpenFileException
      */
     public function __construct(string $filename) {
         $this->stream = fopen($filename, 'r');
