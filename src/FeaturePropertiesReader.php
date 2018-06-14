@@ -67,6 +67,12 @@ class FeaturePropertiesReader
      */
     private $product = null;
 
+
+    /**
+     * @var null|string
+     */
+    private $function = null;
+
     /**
      * @var array
      */
@@ -109,6 +115,8 @@ class FeaturePropertiesReader
                 $this->product = $reader->getContent();
             } else if ( $field == 'protein_id') {
                 $this->protein_id = $reader->getContent();
+            } else if ( $field == 'function') {
+                $this->function = $reader->getContent();
             } else {
                 $this->othesr[$reader->getField()][] = $reader->getContent();
             }
@@ -137,6 +145,10 @@ class FeaturePropertiesReader
 
     public function getProduct() : ?string {
         return $this->product;
+    }
+
+    public function getFunction() : ?string {
+        return $this->function;
     }
 
     /**
