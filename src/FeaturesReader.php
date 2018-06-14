@@ -13,124 +13,147 @@ namespace edwrodrig\genbank_reader;
 class FeaturesReader
 {
     /**
-     * @var resource
+     * @var StreamReader
      */
     private $stream;
 
     /**
+     * @var string
+     */
+    private $description;
+
+    /**
+     * @var FeatureFieldReader
+     */
+    private $source;
+
+    /**
+     * @var FeatureFieldReader[]
+     */
+    private $coding_sequences = [];
+
+    /**
+     * @var FeatureFieldReader[]
+     */
+    private $transfer_rnas = [];
+
+    /**
+     * @var FeatureFieldReader[]
+     */
+    private $messenger_rnas = [];
+
+    /**
+     * @var FeatureFieldReader[]
+     */
+    private $ribosomal_rnas = [];
+
+    private $genes = [];
+
+    private $others = [];
+
+    /**
      * FeatureReader constructor.
      * @param $stream
-     * @throws exception\InvalidHeaderFieldException
+     * @throws exception\InvalidFeatureFieldException
      * @throws exception\InvalidStreamException
      */
-    public function __construct($stream) {
-        if ( !is_resource($stream) ) {
-            throw new exception\InvalidStreamException;
-        }
+    public function __construct(StreamReader $stream)
+    {
         $this->stream = $stream;
         $this->parse();
     }
 
+    static private function readContent(string $line): string
+    {
+        if ($part = substr($line, 21)) {
+            return $part;
+        } else {
+            return '';
+        }
+    }
+
+    public function getSource() : FeatureFieldReader {
+        return $this->source;
+    }
+
     /**
-     * @throws exception\InvalidHeaderFieldException
-     * @throws exception\InvalidStreamException
+     * @return FeatureFieldReader[]
      */
-    private function parse() {
+    public function getCodingSequences(): array
+    {
+        return $this->coding_sequences;
+    }
 
-        while ( $field = HeaderFieldReader::getNextField($this->stream) ) {
+    /**
+     * @see https://en.wikipedia.org/wiki/Transfer_RNA
+     * @return FeatureFieldReader[]
+     */
+    public function getTransferRnas(): array
+    {
+        return $this->transfer_rnas;
+    }
 
-            if ( $field == 'ORIGIN')
+    /**
+     * @see https://en.wikipedia.org/wiki/Ribosomal_RNA
+     * @return FeatureFieldReader[]
+     */
+    public function getRibosomalRnas(): array
+    {
+        return $this->ribosomal_rnas;
+    }
+
+    /**
+     * @see https://en.wikipedia.org/wiki/Messenger_RNA
+     * @return FeatureFieldReader[]
+     */
+    public function getMessengerRnas(): array
+    {
+        return $this->messenger_rnas;
+    }
+
+    public function getGenes() : array {
+        return $this->genes;
+    }
+
+    public function getOthers() : array {
+        return $this->others;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @throws exception\InvalidFeatureFieldException
+     */
+    private function parse()
+    {
+
+        $line = $this->stream->readLine();
+        $this->description = trim(self::readContent($line));
+
+        while ($field = HeaderFieldReader::getNextField($this->stream)) {
+
+            if ($field == 'ORIGIN')
                 break;
 
-
-            if ( $field == 'FEATURES')
-                $this->references[] = new HeaderReferenceReader($this->stream);
-            else if ( $field == 'source' ) {
-            } else if ( $field == 'CDS' ) {
-            } else if ( $field == 'tRNA' ) {
-            } else if ( $field == 'rRNA' ) {
-            } else if ( $field == 'mRNA' ) {
-            }
-
-            $reader = new HeaderFieldReader($this->stream);
-            if ( $field == 'DEFINITION')  {
-                $this->definition = $reader->getContent();
-            } else if ($field == 'LOCUS') {
-                $this->locus = $reader->getContent();
-            } else if ($field == 'VERSION' ) {
-                $this->version = $reader->getContent();
-            } else if ( $field == 'ORGANISM') {
-                $this->organism = $reader->getContent();
+            if ($field == 'source') {
+                $this->source = new FeatureFieldReader($this->stream);
+            } else if ($field == 'CDS') {
+                $this->coding_sequences[] = new FeatureFieldReader($this->stream);
+            } else if ($field == 'tRNA') {
+                $this->transfer_rnas[] = new FeatureFieldReader($this->stream);
+            } else if ($field == 'rRNA') {
+                $this->ribosomal_rnas[] = new FeatureFieldReader($this->stream);
+            } else if ($field == 'mRNA') {
+                $this->messenger_rnas[] = new FeatureFieldReader($this->stream);
+            } else if ( $field == 'gene') {
+                $this->genes[] = new FeatureFieldReader($this->stream);
+            } else {
+                $this->others[$field] = new FeatureFieldReader($this->stream);
             }
         }
 
     }
-
-        //qWarning() << "Estado: FEATURES";
-/*
-        first = line.mid ( 0 , 21 ).trimmed () ;
-        if ( first.length() > 0 && rangeStr.length() > 0 ) {
-            if ( type == "source" ) {
-                QStringList ts = featureStr.split ( "taxon:" ) ;
-                        if ( ts.count() > 1 ) data["TAXID"] = ts[1].replace ( "\"" , "" ) ;
-                    } else {
-                rangeStr = rangeStr.replace ( QRegExp ( "(<|>|\\(|\\)|join)"), "" ) ;
-                rangeStr = rangeStr.replace ( QRegExp ( ",+" ) , "," ) ;
-                QMap<QString,QString> tempFeature ;
-                        if ( rangeStr.mid ( 0 , 10 ) == "complement" ) {
-                            rangeStr = rangeStr.mid ( 10 ) ;
-                            tempFeature["complement"] = "1" ;
-                        } else tempFeature["complement"] = "0" ;
-                        QStringList ts = featureStr.split ( "\n" ) ;
-                        //qWarning( "range : %s line : %d" , rangeStr.toLatin1().data() , linecount );
-
-                        foreach( QString str, ts ) {
-                    int pos = str.indexOf( "=" );
-                            tag = str.mid( 0, pos );
-                            QString val = str.mid( pos + 1 ).replace( "\"" , "" );
-                            if ( tag == "/locus_tag" ) {
-                                tempFeature["locus_tag"] = val;
-                                tempFeature["metadata"] += tag+": "+val+"\n";
-                            } else if( tag == "/function" ) {
-                                tempFeature["function"] = val;
-                                tempFeature["metadata"] += tag+": "+val+"\n";
-                            } else if( tag == "/product" ) {
-                                tempFeature["product"] = val;
-                                tempFeature["metadata"] += tag+": "+val+"\n";
-                            } else if( tag == "/note" ) {
-                                tempFeature["note"] = val;
-                                tempFeature["metadata"] += tag+": "+val+"\n";
-                            } else if( tag == "/protein_id" ) {
-                                tempFeature["protein_id"] = val;
-                                tempFeature["metadata"] += tag+": "+val+"\n";
-                            } else if( tag == "/db_xref" ) {
-                                tempFeature["db_xref"] = val;
-                                tempFeature["metadata"] += tag+": "+val+"\n";
-                            } else if( tag == "/translation" )
-                                tempFeature["translation"] = val.replace( QRegExp("\\s"), "" );
-                        }
-                        ts = rangeStr.split ( "," );
-                        int excnt = 1;
-                        foreach( QString str, ts ) {
-                    if( ! str.isEmpty() ) {
-                        for( QMap<QString,QString>::iterator i = tempFeature.begin(); i != tempFeature.end(); i++ )
-                                    feature[str].insert( i.key(), i.value() );
-
-                                if( tempFeature.contains( "product" ) && ts.count() > 1 )
-                                    feature[str]["product"] += QString( "(Exon; %1)").arg( excnt );
-                                excnt++;
-                            }
-                }
-                    }
-            rangeStr = featureStr = "" ;
-
-
-        if( first.length() == 0 ) {
-            QString str = line.mid( 21 ).trimmed();
-                    if( str.mid( 0, 1 ) == "/" ) featureStr += QString( "\n%1").arg( str );
-                    else featureStr += QString( " %1").arg( str );
-                }
-
-    }
-*/
 }
