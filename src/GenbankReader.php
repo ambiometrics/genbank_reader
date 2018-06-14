@@ -1,75 +1,100 @@
 <?php
+declare(strict_types=1);
 
 namespace edwrodrig\genbank_reader;
-use IteratorAggregate;
 
 /**
  * @see https://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html
  * @package edwrodrig\genbank_reader
  */
-class GenbankReader implements IteratorAggregate
+class GenbankReader
 {
+
+    /**
+     * @var StreamReader
+     */
+    private $stream;
 
     /**
      * @var bool|null|resource
      */
-    public $stream = null;
+    private $handle = null;
 
     /**
      * @var HeaderReader
      */
-    public $header;
+    private $header;
 
+    /**
+     * @var FeaturesReader
+     */
+    private $features;
+
+    /**
+     * @var OriginReader
+     */
+    private $origin;
 
     /**
      * FileParser constructor.
      * @param string $filename
+     * @throws exception\InvalidFeatureFieldException
      * @throws exception\InvalidHeaderFieldException
      * @throws exception\InvalidStreamException
+     * @throws exception\OpenFileException
      */
     public function __construct(string $filename) {
-        $this->stream = fopen($filename, 'r');
-        if ( $this->stream === FALSE ) {
+        $this->handle = fopen($filename, 'r');
+        if ( $this->handle === FALSE ) {
             throw new exception\OpenFileException($filename);
         }
-        $this->header = new HeaderReader($this->stream);
+        $this->stream = new StreamReader($this->handle);
+        $this->parse();
     }
 
     public function __destruct()
     {
-        if (is_null($this->stream)) return;
-        fclose($this->stream);
+        if (is_resource($this->handle))
+            fclose($this->handle);
     }
 
     /**
-     * Get the headers of the line
+     * @throws exception\InvalidFeatureFieldException
+     * @throws exception\InvalidHeaderFieldException
+     * @throws exception\InvalidStreamException
+     */
+    private function parse() {
+        $this->header = new HeaderReader($this->stream);
+        $this->features = new FeaturesReader($this->stream);
+        $this->origin = new OriginReader($this->stream);
+    }
+
+    /**
+     * Get the headers of the file
      * @return HeaderReader
      */
-    public function getHeaders() : HeaderReader {
+    public function getHeader() : HeaderReader {
         return $this->header;
     }
 
     /**
-     * Convert a raw line in a array of columns.
-     *
-     * You can get the column metadata with {@see HeaderParser::getMetricByColummn()}
-     * @see GenbankReader::getHeaders() to get the header class
-     * @param string $line
-     * @return array
+     * Get the features of the file
+     * @return FeaturesReader
      */
-    private function parseDataLine(string $line) : array {
-        $line = mb_convert_encoding($line, 'UTF-8');
-        $line = trim($line);
-        $tokens = preg_split('/\s+/', $line);
-        return $tokens;
+    public function getFeatures() : FeaturesReader {
+        return $this->features;
     }
 
-    public function getIterator() {
-        while ($line = fgets($this->stream)) {
-            $data = $this->parseDataLine($line);
-            yield $data;
-        }
+    /**
+     * Get the origin of the file
+     *
+     * The origin as the sequence data
+     * @return OriginReader
+     */
+    public function getOrigin() : OriginReader {
+        return $this->origin;
     }
+
 
 
 }

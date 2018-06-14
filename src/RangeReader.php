@@ -40,7 +40,7 @@ class RangeReader
             $this->complement = true;
         }
 
-        if ( preg_match('/(\d+)\.\.(\d+)/', $this->original_text, $matches) ) {
+        if ( preg_match('/(\d+)\<?\.\.\>?(\d+)/', $this->original_text, $matches) ) {
 
             $this->start = intval($matches[1]);
             $this->end = intval($matches[2]);

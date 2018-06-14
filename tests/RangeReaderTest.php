@@ -14,6 +14,7 @@ class RangeReaderTest extends TestCase
      *              [1, 206, false, "<1..206"]
      *              [687, 3158, false, "687..3158"]
      *              [3300, 4037, true, "complement(3300..4037)"]
+     *              [3300, 4037, true, "complement(<3300..>4037)"]
      * @param int $expectedStart
      * @param int $expectedEnd
      * @param bool $expectedIsComplement
