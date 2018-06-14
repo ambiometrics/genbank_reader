@@ -23,9 +23,9 @@ class FeatureFieldReader
     private $location;
 
     /**
-     * @var string
+     * @var FeaturePropertiesReader
      */
-    private $content = '';
+    private $properties;
 
     /**
      * HeaderFieldReader constructor.
@@ -43,10 +43,6 @@ class FeatureFieldReader
 
     public function getLocation() : RangeReader {
         return $this->location;
-    }
-
-    public function getContent() : string {
-        return $this->content;
     }
 
     static public function getNextField(StreamReader $stream) : ?string {
@@ -74,9 +70,6 @@ class FeatureFieldReader
         }
     }
 
-    /**
-     * @throws exception\InvalidFeatureFieldException
-     */
     private function parse() {
         $line = $this->stream->readLine();
 
@@ -87,21 +80,32 @@ class FeatureFieldReader
             throw new exception\InvalidFeatureFieldException($line);
         }
 
+        $content = '';
 
         while ( !$this->stream->atEnd() ) {
             $line = $this->stream->readLine();
 
             $field = $this->readField($line);
-            $content = $this->readContent($line);
+
 
             if ( is_null($field) ) {
-                $this->content .= $content;
+                $content .= $this->readContent($line);
 
             } else {
                 $this->stream->rollBack();
                 break;
             }
         }
-        $this->content = trim($this->content);
+
+        $this->properties = new FeaturePropertiesReader($content);
+
+    }
+
+    /**
+     * Get Properties
+     * @return FeaturePropertiesReader
+     */
+    public function getProperties() : FeaturePropertiesReader {
+        return $this->properties;
     }
 }

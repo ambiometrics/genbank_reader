@@ -1,11 +1,5 @@
 <?php
 declare(strict_types=1);
-/**
- * Created by PhpStorm.
- * User: edwin
- * Date: 11-06-18
- * Time: 15:52
- */
 
 namespace edwrodrig\genbank_reader;
 
@@ -47,7 +41,6 @@ class HeaderReader
      * HeaderParser constructor.
      * @param StreamReader $stream
      * @throws exception\InvalidHeaderFieldException
-     * @throws exception\InvalidStreamException
      */
     public function __construct(StreamReader $stream) {
         $this->stream = $stream;

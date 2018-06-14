@@ -50,7 +50,11 @@ EOF
         $this->assertEquals(1, $header->getLocation()->getStart());
         $this->assertEquals(5028, $header->getLocation()->getEnd());
         $this->assertEquals(false, $header->getLocation()->isComplement());
-        $this->assertEquals("/organism=\"Saccharomyces cerevisiae\"\n/db_xref=\"taxon:4932\"\n/chromosome=\"IX\"\n/map=\"9\"", $header->getContent());
+
+        $properties = $header->getProperties();
+
+        $this->assertEquals("Saccharomyces cerevisiae", $properties->getOrganism());
+        $this->assertEquals(["taxon:4932"], $properties->getDbXref());
 
     }
 }
