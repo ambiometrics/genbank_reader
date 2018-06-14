@@ -29,6 +29,7 @@ AEVLLRVDNIIRARPRTANRQHM"
 /note="plasma membrane glycoprotein"
 /function="required for axial budding pattern of S.
 cerevisiae"
+/locus_tag="amad1_04990"
 EOF;
 
         $properties = new FeaturePropertiesReader($content);
@@ -42,6 +43,8 @@ EOF;
         $this->assertEquals('TCP1-beta', $properties->getProduct());
         $this->assertEquals(3, $properties->getCodonStart());
         $this->assertEquals("SSIYNGISTSGLDLNNGTIADMRQLGIVESYKLKRAVVSSASEAAEVLLRVDNIIRARPRTANRQHM", $properties->getTranslation());
+        $this->assertEquals("required for axial budding pattern of S.cerevisiae", $properties->getFunction());
+        $this->assertEquals('amad1_04990', $properties->getLocusTag());
 
         $this->assertEquals([], $properties->getOthers());
 

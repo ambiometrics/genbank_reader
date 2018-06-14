@@ -73,6 +73,12 @@ class FeaturePropertiesReader
      */
     private $function = null;
 
+
+    /**
+     * @var null|string
+     */
+    private $locus_tag = null;
+
     /**
      * @var array
      */
@@ -117,6 +123,8 @@ class FeaturePropertiesReader
                 $this->protein_id = $reader->getContent();
             } else if ( $field == 'function') {
                 $this->function = $reader->getContent();
+            } else if ( $field == 'locus_tag') {
+                $this->locus_tag = $reader->getContent();
             } else {
                 $this->othesr[$reader->getField()][] = $reader->getContent();
             }
@@ -149,6 +157,10 @@ class FeaturePropertiesReader
 
     public function getFunction() : ?string {
         return $this->function;
+    }
+
+    public function getLocusTag() : ?string {
+        return $this->locus_tag;
     }
 
     /**
