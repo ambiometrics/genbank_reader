@@ -1,15 +1,17 @@
 <?php
 declare(strict_types=1);
-/**
- * Created by PhpStorm.
- * User: edwin
- * Date: 14-06-18
- * Time: 11:52
- */
+
 
 namespace edwrodrig\genbank_reader;
 
 
+/**
+ * Class OriginReader
+ * This class read the origin section of the file
+ *
+ * @see
+ * @package edwrodrig\genbank_reader
+ */
 class OriginReader
 {
     /**
@@ -22,6 +24,11 @@ class OriginReader
      */
     private $sequence = '';
 
+    /**
+     * OriginReader constructor.
+     *
+     * @param StreamReader $stream
+     */
     public function __construct(StreamReader $stream) {
         $this->stream = $stream;
         $this->parse();

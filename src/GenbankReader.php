@@ -4,6 +4,10 @@ declare(strict_types=1);
 namespace edwrodrig\genbank_reader;
 
 /**
+ * Genbank Reader
+ *
+ * This class read a Genbank file. Genbank file is a very common file format to store genomic data. But it is very bad for parsing it.
+ *
  * @see https://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html
  * @package edwrodrig\genbank_reader
  */
@@ -71,6 +75,8 @@ class GenbankReader
 
     /**
      * Get the headers of the file
+     *
+     * @api
      * @return HeaderReader
      */
     public function getHeader() : HeaderReader {
@@ -79,6 +85,7 @@ class GenbankReader
 
     /**
      * Get the features of the file
+     * @api
      * @return FeaturesReader
      */
     public function getFeatures() : FeaturesReader {
@@ -89,6 +96,7 @@ class GenbankReader
      * Get the origin of the file
      *
      * The origin as the sequence data
+     * @api
      * @return OriginReader
      */
     public function getOrigin() : OriginReader {

@@ -85,6 +85,12 @@ class FeaturePropertiesReader
      */
     private $others = [];
 
+    /**
+     * FeaturePropertiesReader constructor.
+     * @param string $raw_properties
+     * @throws exception\InvalidFeatureFieldException
+     * @throws exception\InvalidStreamException
+     */
     public function __construct(string $raw_properties) {
         $stream = $f = fopen('php://memory', 'r+');
         fwrite($stream, $raw_properties);
@@ -132,39 +138,72 @@ class FeaturePropertiesReader
         }
     }
 
+    /**
+     * Get the database cross reference
+     * @return array
+     */
     public function getDbXref() : array {
         return $this->db_xref;
     }
 
+    /**
+     * Get gene
+     * @return null|string
+     */
     public function getGene() : ?string {
         return $this->gene;
     }
 
+    /**
+     * Get codon start
+     * @return int|null
+     */
     public function getCodonStart() : ?int {
         return $this->codon_start;
     }
 
+    /**
+     * Get note
+     * @return null|string
+     */
     public function getNote() : ?string {
         return $this->note;
     }
 
+    /**
+     * Get the protein id
+     * @return null|string
+     */
     public function getProteinId() : ?string {
         return $this->protein_id;
     }
 
+    /**
+     * Get the product
+     * @return null|string
+     */
     public function getProduct() : ?string {
         return $this->product;
     }
 
+    /**
+     * Get function
+     * @return null|string
+     */
     public function getFunction() : ?string {
         return $this->function;
     }
 
+    /**
+     * Get locus tag
+     * @return null|string
+     */
     public function getLocusTag() : ?string {
         return $this->locus_tag;
     }
 
     /**
+     * Get organism
      * @return null|string
      */
     public function getOrganism(): ?string
@@ -173,6 +212,7 @@ class FeaturePropertiesReader
     }
 
     /**
+     * Get Chromosome
      * @return null|string
      */
     public function getChromosome(): ?string
@@ -181,6 +221,7 @@ class FeaturePropertiesReader
     }
 
     /**
+     * Get map
      * @return null|string
      */
     public function getMap(): ?string
@@ -189,6 +230,7 @@ class FeaturePropertiesReader
     }
 
     /**
+     * Get translation
      * @return null|string
      */
     public function getTranslation(): ?string

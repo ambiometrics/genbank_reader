@@ -37,6 +37,10 @@ class FeatureFieldReader
         $this->parse();
     }
 
+    /**
+     * Get field
+     * @return string
+     */
     public function getField() : string {
         return $this->field;
     }
@@ -70,6 +74,9 @@ class FeatureFieldReader
         }
     }
 
+    /**
+     * @throws exception\InvalidFeatureFieldException
+     */
     private function parse() {
         $line = $this->stream->readLine();
 

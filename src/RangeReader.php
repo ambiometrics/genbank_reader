@@ -3,6 +3,14 @@ declare(strict_types=1);
 
 namespace edwrodrig\genbank_reader;
 
+/**
+ * Class RangeReader
+ *
+ * Clas to read a rango string
+ *
+ * The range string is some text that is present in the feature section
+ * @package edwrodrig\genbank_reader
+ */
 class RangeReader
 {
     private $original_text;

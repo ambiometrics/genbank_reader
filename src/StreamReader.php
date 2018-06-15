@@ -9,7 +9,15 @@ declare(strict_types=1);
 
 namespace edwrodrig\genbank_reader;
 
-
+/**
+ * Class StreamReader
+ *
+ * This is a class to help reading a file by line.
+ * The main feature is the {@see StreamReader::rollback()} rollback, that go to the position before the last read.
+ * It is very useful at reading lines
+ * 
+ * @package edwrodrig\genbank_reader
+ */
 class StreamReader
 {
     /**
@@ -17,6 +25,10 @@ class StreamReader
      */
     private $stream;
 
+    /**
+     * The position before read line
+     * @var int
+     */
     private $last_position = 0;
 
     /**
@@ -34,6 +46,7 @@ class StreamReader
 
     /**
      * Read a line
+     * @uses fgets()
      * @return string
      */
     public function readLine() : string {
@@ -57,7 +70,10 @@ class StreamReader
     /**
      * Rollback the last line read.
      *
-     * Just rollback the last read. If you call multiple times is the same as rollback the last read
+     * Just rollback the last read. If you call multiple times is the same as rollback the last read.
+     * Before Every @see StreamReader::readLine() saves the current position to be able to rollBack to that position
+     * @see StreamReader::readLine()
+     * @uses fseek()
      */
     public function rollBack() {
         fseek($this->stream, $this->last_position);
