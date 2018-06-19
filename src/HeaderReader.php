@@ -9,7 +9,7 @@ namespace edwrodrig\genbank_reader;
  *
  * This class read the header section of a Genbank file.
  * This class should not be created by an user.
- * The only interaction that a final user mya have is by their getters.
+ * The only interaction that a final user may have is by their getters.
  *
  * @see https://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html#LocusB
  * @package edwrodrig\genbank_reader
@@ -41,7 +41,6 @@ class HeaderReader
      * @var null|string
      */
     private $organism = null;
-
 
     /**
      * @var null|string

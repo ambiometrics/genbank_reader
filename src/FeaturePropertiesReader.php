@@ -1,15 +1,18 @@
 <?php
 declare(strict_types=1);
-/**
- * Created by PhpStorm.
- * User: edwin
- * Date: 14-06-18
- * Time: 10:54
- */
 
 namespace edwrodrig\genbank_reader;
 
-
+/**
+ * Class FeaturePropertiesReader
+ *
+ * This is a class to wraps the parsing of all {@see FeatureFieldReader feature} {@see FeaturePropertyReader properties}
+ * From this class you must access to the field properties like
+ * {@see FeaturePropertiesReader::getDbXref() db_xref}, {@see FeaturePropertiesReader::getOrganism() organism}, etc.
+ *
+ *
+ * @package edwrodrig\genbank_reader
+ */
 class FeaturePropertiesReader
 {
 
@@ -68,7 +71,6 @@ class FeaturePropertiesReader
      */
     private $product = null;
 
-
     /**
      * @var null|string
      */
@@ -100,8 +102,9 @@ class FeaturePropertiesReader
     }
 
     /**
+     * Parse the feature properties
+     *
      * @throws exception\InvalidFeatureFieldException
-     * @throws exception\InvalidStreamException
      */
     private function parse() {
 
@@ -238,6 +241,11 @@ class FeaturePropertiesReader
         return $this->translation;
     }
 
+    /**
+     * Get other information that is not commonly captured
+     *
+     * @return array A associative array with other values
+     */
     public function getOthers(): array {
         return $this->others;
     }

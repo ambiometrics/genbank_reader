@@ -53,6 +53,7 @@ class HeaderReferenceReader
     }
 
     /**
+     * Parse the header section
      * @throws exception\InvalidHeaderFieldException
      */
     private function parse() {

@@ -53,9 +53,8 @@ class FeaturesReader
 
     /**
      * FeatureReader constructor.
-     * @param $stream
+     * @param StreamReader $stream
      * @throws exception\InvalidFeatureFieldException
-     * @throws exception\InvalidStreamException
      */
     public function __construct(StreamReader $stream)
     {
@@ -77,6 +76,8 @@ class FeaturesReader
     }
 
     /**
+     * Get the coding sequences
+     *
      * @return FeatureFieldReader[]
      */
     public function getCodingSequences(): array
@@ -85,6 +86,8 @@ class FeaturesReader
     }
 
     /**
+     * Get the transfer RNA features
+     *
      * @see https://en.wikipedia.org/wiki/Transfer_RNA
      * @return FeatureFieldReader[]
      */
@@ -94,6 +97,8 @@ class FeaturesReader
     }
 
     /**
+     * Get the ribosomal RNA features
+     *
      * @see https://en.wikipedia.org/wiki/Ribosomal_RNA
      * @return FeatureFieldReader[]
      */
@@ -103,6 +108,8 @@ class FeaturesReader
     }
 
     /**
+     * Get the messenger RNA features
+     *
      * @see https://en.wikipedia.org/wiki/Messenger_RNA
      * @return FeatureFieldReader[]
      */
@@ -111,14 +118,30 @@ class FeaturesReader
         return $this->messenger_rnas;
     }
 
+    /**
+     * Get the genes
+     *
+     * @api
+     * @return FeatureFieldReader[]
+     */
     public function getGenes() : array {
         return $this->genes;
     }
 
+    /**
+     * Get the others
+     *
+     * @api
+     * @return FeatureFieldReader[]
+     */
     public function getOthers() : array {
         return $this->others;
     }
 
+    /**
+     * Get the description
+     * @return string
+     */
     public function getDescription(): string
     {
         return $this->description;

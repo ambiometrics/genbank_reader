@@ -28,16 +28,27 @@ class OriginReader
      * OriginReader constructor.
      *
      * @param StreamReader $stream
+     * @uses OriginReader::parse()
      */
     public function __construct(StreamReader $stream) {
         $this->stream = $stream;
         $this->parse();
     }
 
+    /**
+     * Get the sequence.
+     *
+     * This is a continuous string of nucleotides without offset values and whitespaces.
+     * @api
+     * @return string
+     */
     public function getSequence() : string {
         return $this->sequence;
     }
 
+    /**
+     * Internal function that parses the file
+     */
     private function parse() {
         $this->stream->readLine();
 

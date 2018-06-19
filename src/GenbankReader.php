@@ -8,6 +8,10 @@ namespace edwrodrig\genbank_reader;
  *
  * This class read a Genbank file. Genbank file is a very common file format to store genomic data. But it is very bad for parsing it.
  *
+ * The ORIGIN may be left blank, may appear as "Unreported," or may give a local pointer to the sequence start, usually involving an experimentally determined restriction cleavage site or the genetic locus (if available). This information is present only in older records.
+ *
+ * The sequence data begin on the line immediately below ORIGIN. To view/save the sequence data only, display the record in FASTA format. A description of FASTA format is accessible from the BLAST Web pages.
+ *
  * @see https://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html
  * @package edwrodrig\genbank_reader
  */
@@ -40,7 +44,7 @@ class GenbankReader
     private $origin;
 
     /**
-     * FileParser constructor.
+     * GenbankReader constructor.
      * @param string $filename
      * @throws exception\InvalidFeatureFieldException
      * @throws exception\InvalidHeaderFieldException
@@ -56,6 +60,12 @@ class GenbankReader
         $this->parse();
     }
 
+    /**
+     * Closes the reader
+     *
+     * @internal
+     * It closes the opened resources
+     */
     public function __destruct()
     {
         if (is_resource($this->handle))
@@ -63,9 +73,9 @@ class GenbankReader
     }
 
     /**
+     * Parses the file
      * @throws exception\InvalidFeatureFieldException
      * @throws exception\InvalidHeaderFieldException
-     * @throws exception\InvalidStreamException
      */
     private function parse() {
         $this->header = new HeaderReader($this->stream);
@@ -77,6 +87,7 @@ class GenbankReader
      * Get the headers of the file
      *
      * @api
+     * @see https://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html#LocusA
      * @return HeaderReader
      */
     public function getHeader() : HeaderReader {
@@ -85,7 +96,9 @@ class GenbankReader
 
     /**
      * Get the features of the file
+     *
      * @api
+     * @see https://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html#FeaturesB
      * @return FeaturesReader
      */
     public function getFeatures() : FeaturesReader {
@@ -96,6 +109,7 @@ class GenbankReader
      * Get the origin of the file
      *
      * The origin as the sequence data
+     * @see https://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html#OriginB
      * @api
      * @return OriginReader
      */

@@ -32,14 +32,29 @@ class HeaderFieldReader
         $this->parse();
     }
 
+    /**
+     * Get the field name
+     *
+     * This get the header field name
+     * @return string
+     */
     public function getField() : string {
         return $this->field;
     }
 
+    /**
+     * Get the content of the field
+     * @return string
+     */
     public function getContent() : string {
         return $this->content;
     }
 
+    /**
+     * Foresse the next field of the stream
+     * @param StreamReader $stream
+     * @return null|string
+     */
     static public function getNextField(StreamReader $stream) : ?string {
 
         $line = $stream->readLine();
@@ -49,7 +64,11 @@ class HeaderFieldReader
 
     }
 
-
+    /**
+     * Read the field
+     * @param string $line
+     * @return null|string
+     */
     static private function readField(string $line) : ?string {
         $field = trim(substr($line, 0, 12));
 
