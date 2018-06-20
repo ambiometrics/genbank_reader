@@ -1,11 +1,5 @@
 <?php
 declare(strict_types=1);
-/**
- * Created by PhpStorm.
- * User: edwin
- * Date: 13-06-18
- * Time: 15:42
- */
 
 namespace edwrodrig\genbank_reader;
 

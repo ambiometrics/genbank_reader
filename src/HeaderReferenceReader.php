@@ -10,6 +10,12 @@ declare(strict_types=1);
 namespace edwrodrig\genbank_reader;
 
 
+/**
+ * Class HeaderReferenceReader
+ *
+ *
+ * @package edwrodrig\genbank_reader
+ */
 class HeaderReferenceReader
 {
     /**

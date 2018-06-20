@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace edwrodrig\genbank_reader;
 
-
+/**
+ * Class HeaderFieldReader
+ * @package edwrodrig\genbank_reader
+ */
 class HeaderFieldReader
 {
 
@@ -78,6 +81,10 @@ class HeaderFieldReader
         return $field;
     }
 
+    /**
+     * @param string $line
+     * @return string
+     */
     static private function readContent(string $line) : string {
         if ( $part = substr($line, 12) ) {
             return $part;
