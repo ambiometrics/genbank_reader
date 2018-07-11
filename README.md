@@ -3,12 +3,12 @@ edwrodrig\genbank_reader
 A php library to read with genbank files.
 This is under construction
 
-[![Latest Stable Version](https://poser.pugx.org/edwrodrig/genbank/v/stable)](https://packagist.org/packages/edwrodrig/genbank)
-[![Total Downloads](https://poser.pugx.org/edwrodrig/genbank/downloads)](https://packagist.org/packages/edwrodrig/genbank)
-[![License](https://poser.pugx.org/edwrodrig/genbank/license)](https://packagist.org/packages/edwrodrig/genbank)
-[![Build Status](https://travis-ci.org/edwrodrig/genbank.svg?branch=master)](https://travis-ci.org/edwrodrig/genbank)
-[![codecov.io Code Coverage](https://codecov.io/gh/edwrodrig/genbank/branch/master/graph/badge.svg)](https://codecov.io/github/edwrodrig/genbank?branch=master)
-[![Code Climate](https://codeclimate.com/github/edwrodrig/genbank/badges/gpa.svg)](https://codeclimate.com/github/edwrodrig/genbank)
+[![Latest Stable Version](https://poser.pugx.org/edwrodrig/genbank_reader/v/stable)](https://packagist.org/packages/edwrodrig/genbank_reader)
+[![Total Downloads](https://poser.pugx.org/edwrodrig/genbank_reader/downloads)](https://packagist.org/packages/edwrodrig/genbank_reader)
+[![License](https://poser.pugx.org/edwrodrig/genbank_reader/license)](https://packagist.org/packages/edwrodrig/genbank_reader)
+[![Build Status](https://travis-ci.org/edwrodrig/genbank_reader.svg?branch=master)](https://travis-ci.org/edwrodrig/genbank_reader)
+[![codecov.io Code Coverage](https://codecov.io/gh/edwrodrig/genbank_reader/branch/master/graph/badge.svg)](https://codecov.io/github/edwrodrig/genbank_reader?branch=master)
+[![Code Climate](https://codeclimate.com/github/edwrodrig/genbank_reader/badges/gpa.svg)](https://codeclimate.com/github/edwrodrig/genbank_reader)
 
 
 ## My use cases
