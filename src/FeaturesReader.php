@@ -149,6 +149,7 @@ class FeaturesReader
 
     /**
      * @throws exception\InvalidFeatureFieldException
+     * @throws exception\InvalidStreamException
      */
     private function parse()
     {
