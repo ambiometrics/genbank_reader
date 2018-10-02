@@ -157,7 +157,7 @@ class FeaturesReader
         $line = $this->stream->readLine();
         $this->description = trim(self::readContent($line));
 
-        while ($field = HeaderFieldReader::getNextField($this->stream)) {
+        while ($field = FeatureFieldReader::getNextField($this->stream)) {
 
             if ($field == 'ORIGIN')
                 break;
